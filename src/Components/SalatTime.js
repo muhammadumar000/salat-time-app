@@ -41,9 +41,7 @@ export default function SalatTime() {
       console.log(data);
     } catch (err) {
       alert('Something went Wrong');
-      // function to check odd number
-
-
+      
     }
   };
 
@@ -87,6 +85,7 @@ export default function SalatTime() {
         justifyContent="center"
         alignItems="center"
         sx={{flexDirection:{xs:'column',sm:'row'}}}
+        mx={5}
       >
         <TextField
           id="outlined-basic"
@@ -95,7 +94,7 @@ export default function SalatTime() {
           onChange={(e) => setCityName(e.target.value)}
           value={cityName}
           autoFocus
-          sx={{ width: {sm: "22rem",xs:'18rem'},'&:active':{border:'none'},'input':{height:'1rem','&:hover':{outline:'none'}}, 'label':{color:'#1D2228','&:hover':{bgcolor:'red'}} }}
+          sx={{ width: {sm: "20rem",xs:'15rem'},'&:active':{border:'none'},'input':{height:'1rem','&:hover':{outline:'none'}}, 'label':{color:'#1D2228','&:hover':{bgcolor:'red'}} }}
         />
         <Button
           sx={{ height: "2.8rem" ,width:'10rem',bgcolor:'#FB8122',color:'#E1E2E2','&:hover':{bgcolor:'#1D2228'}}}
