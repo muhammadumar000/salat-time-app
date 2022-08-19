@@ -9,6 +9,7 @@ import Paper from "@mui/material/Paper";
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import PlaceIcon from '@mui/icons-material/Place';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
+import {CircularProgress} from "@mui/material";
 
 
 export default function SalatTime() {
@@ -18,9 +19,11 @@ export default function SalatTime() {
   const [hour,setHour] = React.useState('');
   const [minutes,setMinutes] = React.useState('');
   const [seconds,setSeconds] = React.useState('');
+  const [isLoading,setIsLoading] = React.useState(false);
 
   const fetchPrayerTimes = async (name) => {
     try {
+      setIsLoading(true);
       const response = await fetch(
         `https://muslimsalat.p.rapidapi.com/${name}.json`,
         {
@@ -33,10 +36,14 @@ export default function SalatTime() {
         }
       );
       const data = await response.json();
+      setIsLoading(false);
       setPrayerTimeData(data);
       console.log(data);
     } catch (err) {
-      console.log(err);
+      alert('Something went Wrong');
+      // function to check odd number
+
+
     }
   };
 
@@ -60,10 +67,6 @@ export default function SalatTime() {
     setTimeout(currentTime,1000)
   })
 
-
-  React.useEffect(() => {
-    fetchPrayerTimes("kahuta");
-  }, []);
 
 
 
@@ -101,7 +104,15 @@ export default function SalatTime() {
         >
           Search
         </Button>
-      </Box>
+        </Box>
+        {
+          isLoading?
+          (
+            <CircularProgress />
+          )
+          :
+          (
+            <>
       <Grid mt={1} width='90%' container spacing={2}>
         <Grid  item xs={6}>
         {prayerTimeData && (
@@ -125,18 +136,19 @@ export default function SalatTime() {
         </Grid>
       </Grid>
       
-      <TableContainer
-        sx={{ width: {sm: "32rem",xs:'22rem'}, padding: "1rem", bgcolor:'#FB8122' }}
-        component={Paper}
-      >
-        <Table sx={{ width: {sm: 400,xs:300} }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell color='#1D2228' sx={{fontSize:'1.2rem'}}>Prayer</TableCell>
-              <TableCell color="#1D2228" sx={{fontSize:'1.2rem'}} align="left">Prayer Time</TableCell>
-            </TableRow>
-          </TableHead>
+      
           {prayerTimeData && (
+            <TableContainer
+            sx={{ width: {sm: "32rem",xs:'22rem'}, padding: "1rem", bgcolor:'#FB8122' }}
+            component={Paper}
+          >
+            <Table sx={{ width: {sm: 400,xs:300} }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell color='#1D2228' sx={{fontSize:'1.2rem'}}>Prayer</TableCell>
+                  <TableCell color="#1D2228" sx={{fontSize:'1.2rem'}} align="left">Prayer Time</TableCell>
+                </TableRow>
+              </TableHead>
             <TableBody >
               <TableRow >
                 <TableCell sx={{fontSize:'1.2rem'}} component="th" scope="row">
@@ -179,9 +191,14 @@ export default function SalatTime() {
                 </TableCell>
               </TableRow>
             </TableBody>
-          )}
-        </Table>
+            </Table>
       </TableContainer>
+          )}
+     
+            </>
+          )
+        }
+    
     </Box>
   );
 }
